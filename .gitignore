@@ -1,0 +1,29 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local databases and SQLite sidecar files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Frontend dependencies and generated output
+frontend/node_modules/
+frontend/dist/
+
+# Local attachment
+/studen@.jpe
