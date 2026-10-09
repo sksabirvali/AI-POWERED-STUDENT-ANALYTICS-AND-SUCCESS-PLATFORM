@@ -73,20 +73,14 @@ def startup_event() -> None:
                 "Set the demo login passwords before enabling APP_SEED_DEMO: "
                 + ", ".join(missing_demo_passwords)
             )
-        db = SessionLocal()
-        try:
-            has_students = db.query(Student.id).first() is not None
-        finally:
-            db.close()
-        if not has_students:
-            seed_database()
-            update_placeholder_student_names()
-            balance_seeded_student_groups()
-            seed_faculty()
-            seed_academic_history()
-            seed_semester_results()
-            seed_student_fees()
-            seed_cultural_activity_fees()
+        seed_database()
+        update_placeholder_student_names()
+        balance_seeded_student_groups()
+        seed_faculty()
+        seed_academic_history()
+        seed_semester_results()
+        seed_student_fees()
+        seed_cultural_activity_fees()
 
 
 class LoginRequest(BaseModel):

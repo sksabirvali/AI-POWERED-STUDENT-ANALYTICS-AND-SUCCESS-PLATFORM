@@ -263,6 +263,7 @@ def seed_academic_history() -> None:
         subject_offsets = [-4.0, 1.0, -1.5, 4.0]
         today = date.today()
         entries = []
+        batch_size = 2000
         for student in students:
             academic = student.academic_record
             attendance = student.attendance_record
@@ -289,7 +290,12 @@ def seed_academic_history() -> None:
                         )
                     )
                     existing_entries.add(entry_key)
-        db.bulk_save_objects(entries)
+                    if len(entries) >= batch_size:
+                        db.bulk_save_objects(entries)
+                        db.commit()
+                        entries.clear()
+        if entries:
+            db.bulk_save_objects(entries)
         db.commit()
     finally:
         db.close()
@@ -329,6 +335,7 @@ def seed_semester_results() -> None:
                 result_groups.setdefault(key, []).append(result)
 
         existing_keys = set()
+        batch_size = 2000
         for key, matching_results in result_groups.items():
             keeper = next((result for result in matching_results if result.academic_year == key[1]), matching_results[0])
             for duplicate in matching_results:
@@ -381,7 +388,12 @@ def seed_semester_results() -> None:
                                 result_status="Passed" if base_marks + variation >= 40 else "Backlog",
                             ))
                         existing_keys.add(key)
-        db.bulk_save_objects(results)
+                        if len(results) >= batch_size:
+                            db.bulk_save_objects(results)
+                            db.commit()
+                            results.clear()
+        if results:
+            db.bulk_save_objects(results)
         db.commit()
     finally:
         db.close()
